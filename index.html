@@ -6,6 +6,8 @@
     <title>تحليل الفجوات: كتاب الامتحان - الصف الأول الإعدادي</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Font Awesome for consistent icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Tajawal', sans-serif; background-color: #fdfbf7; color: #1f2937; overflow-x: hidden; }
@@ -47,7 +49,7 @@
             align-items: center;
             justify-content: center;
             border-radius: 50%;
-            font-size: 1.75rem;
+            font-size: 1.5rem; /* Adjusted for FontAwesome */
             margin-bottom: 1rem;
             transition: all 0.3s ease;
         }
@@ -86,9 +88,15 @@
             <p class="text-xl md:text-2xl text-red-100 font-light mb-8 max-w-2xl mx-auto">اللغة العربية - الصف الأول الإعدادي</p>
             
             <div class="inline-flex flex-wrap justify-center gap-4 text-sm md:text-base">
-                <span class="bg-white/10 backdrop-blur-md px-6 py-2 rounded-full border border-white/20 shadow-sm">📊 تحليل الفجوات</span>
-                <span class="bg-white/10 backdrop-blur-md px-6 py-2 rounded-full border border-white/20 shadow-sm">⚖️ مقارنات معيارية</span>
-                <span class="bg-white/10 backdrop-blur-md px-6 py-2 rounded-full border border-white/20 shadow-sm">💡 توصيات التطوير</span>
+                <span class="bg-white/10 backdrop-blur-md px-6 py-2 rounded-full border border-white/20 shadow-sm flex items-center gap-2">
+                    <i class="fas fa-chart-pie text-secondary"></i> 📊 تحليل الفجوات
+                </span>
+                <span class="bg-white/10 backdrop-blur-md px-6 py-2 rounded-full border border-white/20 shadow-sm flex items-center gap-2">
+                    <i class="fas fa-balance-scale text-secondary"></i> ⚖️ مقارنات معيارية
+                </span>
+                <span class="bg-white/10 backdrop-blur-md px-6 py-2 rounded-full border border-white/20 shadow-sm flex items-center gap-2">
+                    <i class="fas fa-lightbulb text-secondary"></i> 💡 توصيات التطوير
+                </span>
             </div>
             
             <div class="mt-10 flex justify-center items-center gap-2 opacity-80 text-sm">
@@ -136,7 +144,9 @@
                 <div class="flex flex-col gap-6 justify-center">
                     <div class="bg-white p-6 rounded-xl border-r-4 border-[#800020] shadow-sm hover:shadow-md transition-all hover:translate-x-[-5px]">
                         <div class="flex items-start gap-4">
-                            <div class="bg-red-50 text-[#800020] p-3 rounded-full text-xl">🎧</div>
+                            <div class="bg-red-50 text-[#800020] p-3 rounded-full text-xl w-12 h-12 flex items-center justify-center">
+                                <i class="fas fa-headphones-alt"></i>
+                            </div>
                             <div>
                                 <h4 class="font-bold text-gray-900 text-lg mb-1">نصوص الاستماع</h4>
                                 <p class="text-gray-600 text-sm leading-relaxed">
@@ -148,7 +158,9 @@
                     
                     <div class="bg-white p-6 rounded-xl border-r-4 border-[#b45309] shadow-sm hover:shadow-md transition-all hover:translate-x-[-5px]">
                         <div class="flex items-start gap-4">
-                            <div class="bg-orange-50 text-[#b45309] p-3 rounded-full text-xl">🖋️</div>
+                            <div class="bg-orange-50 text-[#b45309] p-3 rounded-full text-xl w-12 h-12 flex items-center justify-center">
+                                <i class="fas fa-pen-nib"></i>
+                            </div>
                             <div>
                                 <h4 class="font-bold text-gray-900 text-lg mb-1">التعبير الكتابي</h4>
                                 <p class="text-gray-600 text-sm leading-relaxed">
@@ -160,7 +172,9 @@
                     
                     <div class="bg-white p-6 rounded-xl border-r-4 border-gray-600 shadow-sm hover:shadow-md transition-all hover:translate-x-[-5px]">
                         <div class="flex items-start gap-4">
-                            <div class="bg-gray-100 text-gray-700 p-3 rounded-full text-xl">📅</div>
+                            <div class="bg-gray-100 text-gray-700 p-3 rounded-full text-xl w-12 h-12 flex items-center justify-center">
+                                <i class="fas fa-calendar-alt"></i>
+                            </div>
                             <div>
                                 <h4 class="font-bold text-gray-900 text-lg mb-1">الدعم اللوجستي</h4>
                                 <p class="text-gray-600 text-sm leading-relaxed">
@@ -213,14 +227,18 @@
                     
                     <div class="space-y-6">
                         <div class="flex items-start bg-white/5 p-4 rounded-lg border border-white/10">
-                            <span class="text-3xl ml-4">⚠️</span>
+                            <span class="text-3xl ml-4 flex items-center justify-center w-10 h-10">
+                                <i class="fas fa-triangle-exclamation text-[#b45309]"></i>
+                            </span>
                             <div>
                                 <strong class="block text-white text-lg mb-1">طول النصوص المفرط</strong>
                                 <span class="text-gray-300 text-sm">نصوص تصل إلى 155 كلمة ترهق الذاكرة العاملة (المعيار: 60-80).</span>
                             </div>
                         </div>
                         <div class="flex items-start bg-white/5 p-4 rounded-lg border border-white/10">
-                            <span class="text-3xl ml-4">👁️</span>
+                            <span class="text-3xl ml-4 flex items-center justify-center w-10 h-10">
+                                <i class="fas fa-eye-slash text-[#b45309]"></i>
+                            </span>
                             <div>
                                 <strong class="block text-white text-lg mb-1">الإحالات البصرية</strong>
                                 <span class="text-gray-300 text-sm">عبارات مثل "في الفقرة الأولى" تلغي الاعتماد على السمع تماماً.</span>
@@ -229,7 +247,8 @@
                     </div>
 
                     <button onclick="scrollToExplorer()" class="mt-8 bg-[#b45309] hover:bg-[#9a4507] text-white font-bold py-3.5 px-8 rounded-full shadow-lg transition transform hover:-translate-y-1 flex items-center gap-2">
-                        استعراض الحل المقترح <span class="text-xl">←</span>
+                        <span>استعراض الحل المقترح</span>
+                        <i class="fas fa-arrow-left text-lg"></i>
                     </button>
                 </div>
                 
@@ -250,21 +269,27 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- Strategic Card 1 -->
                 <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border-t-8 border-[#800020] transform hover:-translate-y-2 group">
-                    <div class="w-16 h-16 bg-red-50 text-[#800020] rounded-full flex items-center justify-center text-3xl mx-auto mb-6 group-hover:bg-[#800020] group-hover:text-white transition-colors">🧭</div>
+                    <div class="w-16 h-16 bg-red-50 text-[#800020] rounded-full flex items-center justify-center text-3xl mx-auto mb-6 group-hover:bg-[#800020] group-hover:text-white transition-colors">
+                        <i class="fas fa-compass"></i>
+                    </div>
                     <h3 class="font-bold text-xl mb-3 text-gray-800">بَوْصَلَة الامتحان</h3>
                     <p class="text-gray-600 leading-relaxed text-sm">تحويل النظريات التربوية الجافة إلى رحلة بصرية ممتعة تشرح "تصنيف بلوم" للطالب.</p>
                 </div>
                 
                 <!-- Strategic Card 2 -->
                 <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border-t-8 border-[#b45309] transform hover:-translate-y-2 group">
-                    <div class="w-16 h-16 bg-orange-50 text-[#b45309] rounded-full flex items-center justify-center text-3xl mx-auto mb-6 group-hover:bg-[#b45309] group-hover:text-white transition-colors">🩹</div>
+                    <div class="w-16 h-16 bg-orange-50 text-[#b45309] rounded-full flex items-center justify-center text-3xl mx-auto mb-6 group-hover:bg-[#b45309] group-hover:text-white transition-colors">
+                        <i class="fas fa-file-medical"></i>
+                    </div>
                     <h3 class="font-bold text-xl mb-3 text-gray-800">التقييم التشخيصي</h3>
                     <p class="text-gray-600 leading-relaxed text-sm">ردم فجوة الانتقال من الابتدائية عبر اختبار قبلي شامل وتوجيه علاجي فوري.</p>
                 </div>
                 
                 <!-- Strategic Card 3 -->
                 <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border-t-8 border-gray-800 transform hover:-translate-y-2 group">
-                    <div class="w-16 h-16 bg-gray-100 text-gray-800 rounded-full flex items-center justify-center text-3xl mx-auto mb-6 group-hover:bg-gray-800 group-hover:text-white transition-colors">✂️</div>
+                    <div class="w-16 h-16 bg-gray-100 text-gray-800 rounded-full flex items-center justify-center text-3xl mx-auto mb-6 group-hover:bg-gray-800 group-hover:text-white transition-colors">
+                        <i class="fas fa-scissors"></i>
+                    </div>
                     <h3 class="font-bold text-xl mb-3 text-gray-800">الريجيم النصي</h3>
                     <p class="text-gray-600 leading-relaxed text-sm">اختزال نصوص الاستماع وحجب المثيرات البصرية لضمان مصداقية القياس.</p>
                 </div>
@@ -283,26 +308,27 @@
     <!-- JS Logic -->
     <script>
         // --- Data Source ---
+        // Using Font Awesome HTML strings for consistent rendering instead of Emojis
         const reportData = [
-            { id: 1, title: "التنافر الثقافي", category: "design", icon: "🎨", critique: "شخصية بيكسار تمسك كتاباً يفتح من اليسار (أجنبي). هذا يضعف أصالة الهوية العربية.", recommendation: "استخدام صور حية لطلاب مصريين وتصحيح اتجاه الكتاب لتعزيز الارتباط العاطفي." },
-            { id: 2, title: "التشويش التسويقي", category: "design", icon: "📢", critique: "عبارة 'تطبيق الامتحان' تطغى على العنوان، مما يجعله يبدو كإعلان.", recommendation: "نقل العبارة لشريط جانبي أو وسام (Badge) لفصل التسويق عن التعليم." },
-            { id: 3, title: "المقدمة وتصنيف بلوم", category: "pedagogy", icon: "🧠", critique: "مقدمة روتينية خالية من المرجعية التربوية مقارنة بالمنافسين.", recommendation: "إنشاء إنفوجرافيك 'بَوْصَلَة الامتحان' لشرح مستويات التفكير بلغة الطالب." },
-            { id: 4, title: "الزحام البصري", category: "design", icon: "🔍", critique: "صور مصغرة للصفحات لا تقرأ، ونص يوضح الواضحات (حشو).", recommendation: "استخدام تقنية 'العدسة المكبرة' (Zoom) لإبراز جماليات التصميم الداخلي." },
-            { id: 5, title: "المصطلحات والمفاهيم", category: "structure", icon: "📚", critique: "قصر المظلة المفاهيمية على 5 مصطلحات وتكرارها يقلل الفهم العميق.", recommendation: "منهجية 'الكبسولة المعرفية': توسيع القائمة، تعريف مبسط، ومثال تطبيقي." },
-            { id: 6, title: "المنطق التصنيفي", category: "structure", icon: "📑", critique: "مقارنة غير متكافئة بين 'الوحدات' و'النحو' في العناوين الرئيسية.", recommendation: "إعادة الهيكلة بدمج الفروع تحت الوحدات لتحقيق التوازن المنطقي." },
-            { id: 7, title: "توزيع المنهج", category: "structure", icon: "📅", critique: "غياب صفحة توزيع المنهج، مما يمثل عبئاً لوجستياً على المعلم.", recommendation: "إدراج خريطة زمنية تفاعلية مع QR Code للتحديثات الوزارية." },
-            { id: 8, title: "نواتج التعلم", category: "pedagogy", icon: "🎯", critique: "غياب الربط بين نواتج التعلم وشكل السؤال الامتحاني.", recommendation: "جدول ثلاثي: مخرج التعلم -> صيغة السؤال -> مفتاح الحل." },
-            { id: 9, title: "التقييم التشخيصي", category: "assessment", icon: "🩺", critique: "تجاهل فجوة الانتقال من الابتدائية بغياب التقييم القبلي.", recommendation: "إضافة اختبار تشخيصي مع توجيه علاجي فوري." },
-            { id: 10, title: "هيكل المراجعة", category: "assessment", icon: "🏗️", critique: "مراجعة مجزأة وغير مركزة (4 صفحات فقط للقراءة والنصوص).", recommendation: "إنشاء فصل تمهيدي موحد 'بوابة العبور' يشمل مسحاً شاملاً." },
-            { id: 11, title: "محتوى المراجعة", category: "content", icon: "📝", critique: "حشو أكاديمي (الجذر اللغوي) وأخطاء لغوية في الصياغة.", recommendation: "حذف الحشو غير المطالب به، وكتابة الجذور مفرقة للدقة." },
-            { id: 12, title: "أمثلة البلاغة", category: "content", icon: "🗣️", critique: "جمود الأمثلة (الجندي أسد) وانفصالها عن واقع الطالب الرقمي.", recommendation: "تجديد الأمثلة لتعكس الوعي الرقمي والبيئي (الهاتف لص الوقت)." },
-            { id: 13, title: "التدريبات الشاملة", category: "assessment", icon: "🏋️", critique: "العنوان مضلل؛ التدريبات تغطي 50% فقط من الفروع.", recommendation: "تعديل العنوان إلى 'تطبيقات عامة' أو شمول كافة الفروع." },
-            { id: 14, title: "كثافة الاستماع", category: "content", icon: "🎧", critique: "طول مفرط للنصوص (155 كلمة) وقلة عددها (33 نصاً).", recommendation: "سياسة 'الريجيم النصي': اختزال النصوص إلى 80 كلمة وزيادة عددها." },
-            { id: 15, title: "منهجية الاستماع", category: "assessment", icon: "👁️", critique: "عرض الأسئلة نصياً يحول الاختبار من سمعي إلى بصري.", recommendation: "حجب المثير البصري وتغيير صيغة السؤال ليعتمد كلياً على الأذن." },
-            { id: 16, title: "جودة الأسئلة", category: "assessment", icon: "✅", critique: "ضعف المشتتات والتركيز على قاع هرم بلوم (التذكر).", recommendation: "تنويع الخيارات، تعزيز الأسئلة الموقفية، وتصميم مشتتات ذكية." },
-            { id: 17, title: "اللمحة الأدبية", category: "pedagogy", icon: "📖", critique: "تأخير المفاهيم لنهاية النص، واستخدام مصطلحات غير دقيقة.", recommendation: "تقديم اللمحة قبل النص للتهيئة، والالتزام بمصطلحات الوزارة." },
-            { id: 18, title: "القواعد الإملائية", category: "content", icon: "✍️", critique: "قصور كمي (6 صفحات) وأخطاء علمية في الأمثلة.", recommendation: "التحول للإنفوجرافيك، تنقيح الأمثلة، وإثراء بنك الأسئلة." },
-            { id: 19, title: "التعبير الكتابي", category: "content", icon: "🖋️", critique: "مساحة ضئيلة (13 صفحة) واختبار للذاكرة بدلاً من المهارة.", recommendation: "مضاعفة المساحة، وتوفير 'صندوق معلومات' كسقالات تعليمية." }
+            { id: 1, title: "التنافر الثقافي", category: "design", icon: '<i class="fas fa-palette"></i>', critique: "شخصية بيكسار تمسك كتاباً يفتح من اليسار (أجنبي). هذا يضعف أصالة الهوية العربية.", recommendation: "استخدام صور حية لطلاب مصريين وتصحيح اتجاه الكتاب لتعزيز الارتباط العاطفي." },
+            { id: 2, title: "التشويش التسويقي", category: "design", icon: '<i class="fas fa-bullhorn"></i>', critique: "عبارة 'تطبيق الامتحان' تطغى على العنوان، مما يجعله يبدو كإعلان.", recommendation: "نقل العبارة لشريط جانبي أو وسام (Badge) لفصل التسويق عن التعليم." },
+            { id: 3, title: "المقدمة وتصنيف بلوم", category: "pedagogy", icon: '<i class="fas fa-brain"></i>', critique: "مقدمة روتينية خالية من المرجعية التربوية مقارنة بالمنافسين.", recommendation: "إنشاء إنفوجرافيك 'بَوْصَلَة الامتحان' لشرح مستويات التفكير بلغة الطالب." },
+            { id: 4, title: "الزحام البصري", category: "design", icon: '<i class="fas fa-search-plus"></i>', critique: "صور مصغرة للصفحات لا تقرأ، ونص يوضح الواضحات (حشو).", recommendation: "استخدام تقنية 'العدسة المكبرة' (Zoom) لإبراز جماليات التصميم الداخلي." },
+            { id: 5, title: "المصطلحات والمفاهيم", category: "structure", icon: '<i class="fas fa-book-open"></i>', critique: "قصر المظلة المفاهيمية على 5 مصطلحات وتكرارها يقلل الفهم العميق.", recommendation: "منهجية 'الكبسولة المعرفية': توسيع القائمة، تعريف مبسط، ومثال تطبيقي." },
+            { id: 6, title: "المنطق التصنيفي", category: "structure", icon: '<i class="fas fa-sitemap"></i>', critique: "مقارنة غير متكافئة بين 'الوحدات' و'النحو' في العناوين الرئيسية.", recommendation: "إعادة الهيكلة بدمج الفروع تحت الوحدات لتحقيق التوازن المنطقي." },
+            { id: 7, title: "توزيع المنهج", category: "structure", icon: '<i class="fas fa-calendar-check"></i>', critique: "غياب صفحة توزيع المنهج، مما يمثل عبئاً لوجستياً على المعلم.", recommendation: "إدراج خريطة زمنية تفاعلية مع QR Code للتحديثات الوزارية." },
+            { id: 8, title: "نواتج التعلم", category: "pedagogy", icon: '<i class="fas fa-bullseye"></i>', critique: "غياب الربط بين نواتج التعلم وشكل السؤال الامتحاني.", recommendation: "جدول ثلاثي: مخرج التعلم -> صيغة السؤال -> مفتاح الحل." },
+            { id: 9, title: "التقييم التشخيصي", category: "assessment", icon: '<i class="fas fa-user-doctor"></i>', critique: "تجاهل فجوة الانتقال من الابتدائية بغياب التقييم القبلي.", recommendation: "إضافة اختبار تشخيصي مع توجيه علاجي فوري." },
+            { id: 10, title: "هيكل المراجعة", category: "assessment", icon: '<i class="fas fa-layer-group"></i>', critique: "مراجعة مجزأة وغير مركزة (4 صفحات فقط للقراءة والنصوص).", recommendation: "إنشاء فصل تمهيدي موحد 'بوابة العبور' يشمل مسحاً شاملاً." },
+            { id: 11, title: "محتوى المراجعة", category: "content", icon: '<i class="fas fa-file-pen"></i>', critique: "حشو أكاديمي (الجذر اللغوي) وأخطاء لغوية في الصياغة.", recommendation: "حذف الحشو غير المطالب به، وكتابة الجذور مفرقة للدقة." },
+            { id: 12, title: "أمثلة البلاغة", category: "content", icon: '<i class="fas fa-comments"></i>', critique: "جمود الأمثلة (الجندي أسد) وانفصالها عن واقع الطالب الرقمي.", recommendation: "تجديد الأمثلة لتعكس الوعي الرقمي والبيئي (الهاتف لص الوقت)." },
+            { id: 13, title: "التدريبات الشاملة", category: "assessment", icon: '<i class="fas fa-dumbbell"></i>', critique: "العنوان مضلل؛ التدريبات تغطي 50% فقط من الفروع.", recommendation: "تعديل العنوان إلى 'تطبيقات عامة' أو شمول كافة الفروع." },
+            { id: 14, title: "كثافة الاستماع", category: "content", icon: '<i class="fas fa-headphones"></i>', critique: "طول مفرط للنصوص (155 كلمة) وقلة عددها (33 نصاً).", recommendation: "سياسة 'الريجيم النصي': اختزال النصوص إلى 80 كلمة وزيادة عددها." },
+            { id: 15, title: "منهجية الاستماع", category: "assessment", icon: '<i class="fas fa-eye-slash"></i>', critique: "عرض الأسئلة نصياً يحول الاختبار من سمعي إلى بصري.", recommendation: "حجب المثير البصري وتغيير صيغة السؤال ليعتمد كلياً على الأذن." },
+            { id: 16, title: "جودة الأسئلة", category: "assessment", icon: '<i class="fas fa-check-double"></i>', critique: "ضعف المشتتات والتركيز على قاع هرم بلوم (التذكر).", recommendation: "تنويع الخيارات، تعزيز الأسئلة الموقفية، وتصميم مشتتات ذكية." },
+            { id: 17, title: "اللمحة الأدبية", category: "pedagogy", icon: '<i class="fas fa-book"></i>', critique: "تأخير المفاهيم لنهاية النص، واستخدام مصطلحات غير دقيقة.", recommendation: "تقديم اللمحة قبل النص للتهيئة، والالتزام بمصطلحات الوزارة." },
+            { id: 18, title: "القواعد الإملائية", category: "content", icon: '<i class="fas fa-pencil-alt"></i>', critique: "قصور كمي (6 صفحات) وأخطاء علمية في الأمثلة.", recommendation: "التحول للإنفوجرافيك، تنقيح الأمثلة، وإثراء بنك الأسئلة." },
+            { id: 19, title: "التعبير الكتابي", category: "content", icon: '<i class="fas fa-feather-alt"></i>', critique: "مساحة ضئيلة (13 صفحة) واختبار للذاكرة بدلاً من المهارة.", recommendation: "مضاعفة المساحة، وتوفير 'صندوق معلومات' كسقالات تعليمية." }
         ];
 
         // --- Render Functions ---
@@ -334,16 +360,23 @@
                             <p class="text-gray-600 text-sm leading-relaxed line-clamp-3">${item.critique}</p>
                             <p class="mt-auto text-xs text-[#b45309] font-bold pt-4 flex items-center gap-1">
                                 <span>اضغط لعرض الحل</span>
-                                <span class="group-hover:translate-x-[-3px] transition-transform">↺</span>
+                                <span class="group-hover:translate-x-[-3px] transition-transform">
+                                    <i class="fas fa-rotate"></i>
+                                </span>
                             </p>
                         </div>
                         
                         <!-- Back: Recommendation -->
                         <div class="card-back rounded-2xl p-8 flex flex-col items-center justify-center text-center text-white border border-[#5a0016]">
-                            <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mb-4 text-2xl">💡</div>
+                            <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mb-4 text-2xl">
+                                <i class="fas fa-lightbulb"></i>
+                            </div>
                             <h3 class="font-bold text-lg text-[#fbbf24] mb-3">التوصية المقترحة</h3>
                             <p class="text-red-50 text-sm leading-loose font-medium">${item.recommendation}</p>
-                             <p class="mt-auto text-xs text-white/50 font-semibold pt-4">اضغط للعودة ↺</p>
+                             <p class="mt-auto text-xs text-white/50 font-semibold pt-4 flex items-center gap-1">
+                                <span>اضغط للعودة</span>
+                                <i class="fas fa-rotate"></i>
+                            </p>
                         </div>
                     </div>
                 `;
