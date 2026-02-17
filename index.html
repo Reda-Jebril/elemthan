@@ -91,7 +91,7 @@
         ::-webkit-scrollbar-thumb:hover { background: #800020; }
     </style>
     <!-- Chosen Palette: Premium Burgundy. Background: #fdfbf7, Primary: #800020 (Burgundy), Secondary: #b45309 (Bronze/Gold). -->
-    <!-- Application Structure Plan: Added Exam Analysis Section. -->
+    <!-- Application Structure Plan: Moved Exam Analysis Section to after Listening/Expression. Updated Footer. -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. Copy protection enabled. -->
 </head>
 <body class="bg-[#fdfbf7] min-h-screen flex flex-col" oncontextmenu="return false;">
@@ -134,58 +134,7 @@
         </p>
     </section>
 
-    <!-- New Section: Exam & Assessment Digital Analysis -->
-    <section class="bg-[#2d0a12] text-white py-16 shadow-lg animate-fade-up delay-200">
-        <div class="container mx-auto px-4">
-            <div class="mb-10 text-center">
-                <h2 class="text-3xl font-bold text-[#b45309] mb-3 relative inline-block">
-                    مقارنة رقمية شاملة: الامتحانات والتقييمات
-                    <span class="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-16 h-1 bg-white/20 rounded-full"></span>
-                </h2>
-                <p class="text-gray-300 mt-4">تحليل الفجوة الرقمية في أدوات القياس والتقويم بين "الامتحان" و"الأضواء"</p>
-            </div>
-
-            <!-- Stats Indicators -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-                <!-- Stat 1: Abundance -->
-                <div class="stat-card bg-white/5 backdrop-blur-sm border border-white/10 p-6 rounded-2xl text-center">
-                    <div class="text-[#b45309] text-4xl mb-2 font-bold">200%</div>
-                    <div class="text-gray-400 text-sm uppercase tracking-wide mb-2">مؤشر الوفرة</div>
-                    <p class="text-sm font-light">يتفوق "الأضواء" بضعف عدد الامتحانات النهائية (20 امتحان) مقارنة بـ "الامتحان" (10 فقط).</p>
-                </div>
-                <!-- Stat 2: Inclusivity -->
-                <div class="stat-card bg-white/5 backdrop-blur-sm border border-white/10 p-6 rounded-2xl text-center">
-                    <div class="text-red-500 text-4xl mb-2 font-bold">0%</div>
-                    <div class="text-gray-400 text-sm uppercase tracking-wide mb-2">مؤشر الشمول (الدمج)</div>
-                    <p class="text-sm font-light">فجوة إقصائية: 0 امتحان دمج في "الامتحان" مقابل 5 امتحانات مخصصة في "الأضواء".</p>
-                </div>
-                <!-- Stat 3: Foundation -->
-                <div class="stat-card bg-white/5 backdrop-blur-sm border border-white/10 p-6 rounded-2xl text-center">
-                    <div class="text-gray-300 text-4xl mb-2 font-bold">4 : 0</div>
-                    <div class="text-gray-400 text-sm uppercase tracking-wide mb-2">مؤشر التأسيس (صفحات)</div>
-                    <p class="text-sm font-light">يبدأ "الأضواء" بـ 4 صفحات تشخيصية، بينما يفتقر "الامتحان" لأي تقييم تشخيصي.</p>
-                </div>
-            </div>
-
-            <!-- Charts Grid -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-                <div class="bg-white rounded-2xl p-6 text-gray-800">
-                    <h3 class="font-bold text-lg mb-4 text-center border-b pb-2">مقارنة أعداد الامتحانات النهائية</h3>
-                    <div class="chart-container" style="height: 300px;">
-                        <canvas id="examsComparisonChart"></canvas>
-                    </div>
-                </div>
-                <div class="bg-white rounded-2xl p-6 text-gray-800">
-                    <h3 class="font-bold text-lg mb-4 text-center border-b pb-2">الفجوة في امتحانات الدمج والتشخيص</h3>
-                    <div class="chart-container" style="height: 300px;">
-                        <canvas id="inclusionGapChart"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Original Dashboard Section: Content Volume -->
+    <!-- Original Dashboard Section: Content Volume (Moved Up) -->
     <section class="bg-white py-16 border-y border-gray-100 shadow-sm animate-fade-up delay-200">
         <div class="container mx-auto px-4">
             <div class="mb-12 text-center">
@@ -193,7 +142,7 @@
                     لوحة المعلومات: كثافة المحتوى
                     <span class="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-16 h-1 bg-[#b45309] rounded-full"></span>
                 </h2>
-                <p class="text-gray-500 mt-4">نظرة كمية تكشف التفاوت في كثافة وعمق المحتوى التدريبي</p>
+                <p class="text-gray-500 mt-4">نظرة كمية تكشف التفاوت في كثافة وعمق المحتوى التدريبي (الاستماع والتعبير)</p>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-stretch">
@@ -329,6 +278,74 @@
         </div>
     </section>
 
+    <!-- New Section: Exam & Assessment Digital Analysis (Moved Here) -->
+    <section class="bg-[#2d0a12] text-white py-16 shadow-lg animate-fade-up delay-200">
+        <div class="container mx-auto px-4">
+            <div class="mb-10 text-center">
+                <h2 class="text-3xl font-bold text-[#b45309] mb-3 relative inline-block">
+                    مقارنة رقمية شاملة: الامتحانات والتقييمات
+                    <span class="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-16 h-1 bg-white/20 rounded-full"></span>
+                </h2>
+                <p class="text-gray-300 mt-4">تحليل الفجوة الرقمية في أدوات القياس والتقويم بين "الامتحان" و"الأضواء"</p>
+            </div>
+
+            <!-- Stats Indicators -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                <!-- Stat 1: Abundance -->
+                <div class="stat-card bg-white/5 backdrop-blur-sm border border-white/10 p-6 rounded-2xl text-center">
+                    <div class="text-[#b45309] text-4xl mb-2 font-bold">200%</div>
+                    <div class="text-gray-400 text-sm uppercase tracking-wide mb-2">مؤشر الوفرة</div>
+                    <p class="text-sm font-light">يتفوق "الأضواء" بضعف عدد الامتحانات النهائية (20 امتحان) مقارنة بـ "الامتحان" (10 فقط).</p>
+                </div>
+                <!-- Stat 2: Inclusivity -->
+                <div class="stat-card bg-white/5 backdrop-blur-sm border border-white/10 p-6 rounded-2xl text-center">
+                    <div class="text-red-500 text-4xl mb-2 font-bold">0%</div>
+                    <div class="text-gray-400 text-sm uppercase tracking-wide mb-2">مؤشر الشمول (الدمج)</div>
+                    <p class="text-sm font-light">فجوة إقصائية: 0 امتحان دمج في "الامتحان" مقابل 5 امتحانات مخصصة في "الأضواء".</p>
+                </div>
+                <!-- Stat 3: Foundation -->
+                <div class="stat-card bg-white/5 backdrop-blur-sm border border-white/10 p-6 rounded-2xl text-center">
+                    <div class="text-gray-300 text-4xl mb-2 font-bold">4 : 0</div>
+                    <div class="text-gray-400 text-sm uppercase tracking-wide mb-2">مؤشر التأسيس (صفحات)</div>
+                    <p class="text-sm font-light">يبدأ "الأضواء" بـ 4 صفحات تشخيصية، بينما يفتقر "الامتحان" لأي تقييم تشخيصي.</p>
+                </div>
+            </div>
+
+            <!-- Charts Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                <div class="bg-white rounded-2xl p-6 text-gray-800">
+                    <h3 class="font-bold text-lg mb-4 text-center border-b pb-2">مقارنة أعداد الامتحانات النهائية</h3>
+                    <div class="chart-container" style="height: 300px;">
+                        <canvas id="examsComparisonChart"></canvas>
+                    </div>
+                </div>
+                <div class="bg-white rounded-2xl p-6 text-gray-800">
+                    <h3 class="font-bold text-lg mb-4 text-center border-b pb-2">الفجوة في امتحانات الدمج والتشخيص</h3>
+                    <div class="chart-container" style="height: 300px;">
+                        <canvas id="inclusionGapChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detailed Notes (Added) -->
+            <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6 text-right">
+                <div class="bg-white/5 p-4 rounded-xl border-r-4 border-red-500">
+                    <h4 class="text-[#b45309] font-bold mb-2 flex items-center gap-2"><i class="fas fa-exclamation-triangle"></i> ملاحظة هيكلية حول الامتحانات</h4>
+                    <p class="text-sm text-gray-300 leading-relaxed">
+                        عدد الامتحانات غير كاف (10 امتحانات فقط)، وهي مقسمة إلى قسمين: (5) مطابق للمواصفة و (5) خاص بنمط الكتاب، وهو ما قد يوحي أن اختبارات "الامتحان" ليست مطابقة تماماً لمواصفة الوزارة.
+                    </p>
+                </div>
+                <div class="bg-white/5 p-4 rounded-xl border-r-4 border-blue-500">
+                    <h4 class="text-[#b45309] font-bold mb-2 flex items-center gap-2"><i class="fas fa-calendar-alt"></i> مقارنة الاختبارات الشهرية</h4>
+                    <ul class="text-sm text-gray-300 leading-relaxed list-disc list-inside">
+                        <li class="mb-1"><span class="font-bold text-white">الأضواء:</span> اختباران في 6 صفحات (مدمجة داخل الكتاب).</li>
+                        <li><span class="font-bold text-white">الامتحان:</span> اختباران في 5 صفحات (داخل الملحق الخارجي).</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Closing Recommendations Summary -->
     <section class="py-20 bg-gray-50">
         <div class="container mx-auto px-4 text-center max-w-5xl">
@@ -367,8 +384,8 @@
     <!-- Footer -->
     <footer class="bg-[#2d0a12] text-gray-400 py-10 text-center border-t border-white/10">
         <div class="container mx-auto px-4">
-            <p class="font-medium text-gray-300">&copy; 2024 تقرير مراجعة جودة المحتوى التعليمي.</p>
-            <p class="text-sm mt-3 opacity-60">تصميم وتطوير تفاعلي</p>
+            <p class="font-medium text-gray-300">&copy; 2026 تقرير مراجعة جودة المحتوى التعليمي.</p>
+            <p class="text-sm mt-3 opacity-60">تصميم وتطوير: رضا جبريل</p>
         </div>
     </footer>
 
