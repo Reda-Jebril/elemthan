@@ -8,96 +8,166 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Tajawal', sans-serif; background-color: #fdfbf7; color: #1f2937; }
+        body { font-family: 'Tajawal', sans-serif; background-color: #fdfbf7; color: #1f2937; overflow-x: hidden; }
+        
+        /* Custom Colors */
+        :root {
+            --primary: #800020; /* Burgundy */
+            --primary-light: #9b1b3b;
+            --secondary: #b45309; /* Bronze/Gold */
+            --bg-cream: #fdfbf7;
+        }
+
         .chart-container { position: relative; width: 100%; max-width: 800px; margin: 0 auto; height: 350px; max-height: 400px; }
+        
+        /* Advanced Card Flip & Styling */
         .card-flip { perspective: 1000px; }
-        .card-inner { position: relative; width: 100%; height: 100%; transition: transform 0.6s; transform-style: preserve-3d; }
-        .card-front, .card-back { backface-visibility: hidden; }
-        .card-back { transform: rotateY(180deg); }
+        .card-inner { position: relative; width: 100%; height: 100%; transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-style: preserve-3d; }
+        .card-front, .card-back { backface-visibility: hidden; position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 1rem; }
+        .card-back { transform: rotateY(180deg); background: linear-gradient(135deg, var(--primary) 0%, #4a0414 100%); }
         .flipped { transform: rotateY(180deg); }
-        /* Scrollbar styling */
+        
+        /* Animations */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-up { animation: fadeUp 0.6s ease-out forwards; opacity: 0; }
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-300 { animation-delay: 0.3s; }
+
+        /* Icon Styling */
+        .icon-circle {
+            background: rgba(128, 0, 32, 0.08);
+            color: var(--primary);
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 1.75rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+        .card-flip:hover .icon-circle {
+            background: var(--primary);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        /* Filter Buttons */
+        .filter-btn { transition: all 0.3s ease; border: 1px solid transparent; }
+        .filter-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .filter-btn.active { background-color: var(--primary); color: white; border-color: var(--primary); }
+        .filter-btn.inactive { background-color: white; color: #4b5563; border-color: #e5e7eb; }
+        .filter-btn.inactive:hover { border-color: var(--primary); color: var(--primary); }
+
+        /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #f1f1f1; }
-        ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
+        ::-webkit-scrollbar-thumb { background: #9b1b3b; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #800020; }
     </style>
-    <!-- Chosen Palette: Warm Neutrals & Professional Blue. Background: #fdfbf7 (Warm Off-white), Primary: #1e3a8a (Deep Blue), Secondary: #d97706 (Amber), Accent: #10b981 (Emerald for recommendations). -->
-    <!-- Application Structure Plan: 
-         1. Hero Section: Sets the tone and context of the report.
-         2. Executive Dashboard: Visualizes the quantitative comparison between 'Al-Emtihan' and 'Al-Adwaa' using charts (Data Clarity).
-         3. The Critique Explorer: The core interactive section. Uses a Grid layout with filtering capabilities (Identity, Content, Pedagogy, Assessment). 
-            Each item is a card that presents the 'Observation' (Problem) and flips/expands to reveal the 'Recommendation' (Solution). This promotes active exploration.
-         4. Deep Dive Carousel: Highlights specific high-impact text critiques (like the 'Listening' issue) that need more reading space.
-         5. Roadmap Summary: A concluding section summarizing the strategic value of the recommendations.
-    -->
-    <!-- Visualization & Content Choices:
-         - Bar Chart (Chart.js): Comparing quantitative metrics (Page counts, Text counts) between Al-Emtihan and Al-Adwaa. Goal: Compare.
-         - Interactive Cards (HTML/JS): To present the 19 critique points. Front shows the issue (Critique), Back shows the solution (Recommendation). Goal: Inform & Engage.
-         - Category Filters: To organize the 19 points into manageable chunks. Goal: Organize.
-         - Progress Indicators: Visualizing the "Score" or "Gap".
-    -->
+    <!-- Chosen Palette: Premium Burgundy. Background: #fdfbf7, Primary: #800020 (Burgundy), Secondary: #b45309 (Bronze/Gold). -->
+    <!-- Application Structure Plan: Same structure, enhanced visual hierarchy and interaction. -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
 </head>
 <body class="bg-[#fdfbf7] min-h-screen flex flex-col">
 
     <!-- Header / Hero -->
-    <header class="bg-[#1e3a8a] text-white py-12 shadow-lg">
-        <div class="container mx-auto px-4 text-center">
-            <h1 class="text-3xl md:text-5xl font-bold mb-4 leading-tight">رؤية نقدية لكتاب الامتحان</h1>
-            <p class="text-xl md:text-2xl text-blue-100 font-light mb-6">اللغة العربية - الصف الأول الإعدادي</p>
-            <div class="inline-block bg-blue-800 rounded-full px-6 py-2 text-sm md:text-base border border-blue-600">
-                تحليل الفجوات • مقارنات معيارية • توصيات التطوير
+    <header class="relative bg-[#800020] text-white py-16 overflow-hidden">
+        <!-- Abstract background pattern using CSS radial gradients for texture -->
+        <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle at 20% 50%, #ffffff 0%, transparent 20%), radial-gradient(circle at 80% 80%, #ffffff 0%, transparent 20%);"></div>
+        
+        <div class="container mx-auto px-4 text-center relative z-10 animate-fade-up">
+            <h1 class="text-4xl md:text-6xl font-bold mb-4 leading-tight tracking-tight">رؤية نقدية لكتاب الامتحان</h1>
+            <p class="text-xl md:text-2xl text-red-100 font-light mb-8 max-w-2xl mx-auto">اللغة العربية - الصف الأول الإعدادي</p>
+            
+            <div class="inline-flex flex-wrap justify-center gap-4 text-sm md:text-base">
+                <span class="bg-white/10 backdrop-blur-md px-6 py-2 rounded-full border border-white/20 shadow-sm">📊 تحليل الفجوات</span>
+                <span class="bg-white/10 backdrop-blur-md px-6 py-2 rounded-full border border-white/20 shadow-sm">⚖️ مقارنات معيارية</span>
+                <span class="bg-white/10 backdrop-blur-md px-6 py-2 rounded-full border border-white/20 shadow-sm">💡 توصيات التطوير</span>
             </div>
-            <p class="mt-8 text-sm opacity-75">إعداد وتصميم: رضا جبريل</p>
+            
+            <div class="mt-10 flex justify-center items-center gap-2 opacity-80 text-sm">
+                <span class="block w-8 h-[1px] bg-red-200"></span>
+                <span>إعداد وتصميم: رضا جبريل</span>
+                <span class="block w-8 h-[1px] bg-red-200"></span>
+            </div>
         </div>
     </header>
 
     <!-- Context Intro -->
-    <section class="container mx-auto px-4 py-10 max-w-4xl text-center">
-        <p class="text-lg text-gray-700 leading-loose">
-            يقدم هذا التقرير تحليلاً عميقاً لكتاب "الامتحان"، مسلطاً الضوء على الفجوات الفنية والتربوية مقارنة بالمعايير الحديثة والمنافسين. 
-            تم تحويل التقرير النصي إلى تجربة تفاعلية تتيح للمهتمين استكشاف <span class="font-bold text-[#1e3a8a]">الملاحظات النقدية</span> 
-            ومقابلتها بـ <span class="font-bold text-[#d97706]">التوصيات العملية</span> للارتقاء بالتجربة التعليمية.
+    <section class="container mx-auto px-4 py-12 max-w-4xl text-center animate-fade-up delay-100">
+        <p class="text-lg md:text-xl text-gray-700 leading-loose font-medium">
+            يقدم هذا التقرير تحليلاً عميقاً لكتاب "الامتحان"، مسلطاً الضوء على الفجوات الفنية والتربوية.
+            <br class="hidden md:block" />
+            من خلال تجربة تفاعلية، نستعرض <span class="text-[#800020] font-bold border-b-2 border-[#800020]/20 pb-1">الملاحظات النقدية</span> 
+            ومقابلتها بـ <span class="text-[#b45309] font-bold border-b-2 border-[#b45309]/20 pb-1">التوصيات العملية</span> للارتقاء بالتجربة التعليمية.
         </p>
     </section>
 
     <!-- Dashboard Section: Quantitative Analysis -->
-    <section class="bg-white py-12 border-y border-gray-200">
+    <section class="bg-white py-16 border-y border-gray-100 shadow-sm animate-fade-up delay-200">
         <div class="container mx-auto px-4">
-            <div class="mb-10 text-center">
-                <h2 class="text-2xl font-bold text-[#1e3a8a] mb-2">لوحة المعلومات: المقارنة المعيارية</h2>
-                <p class="text-gray-600">مقارنة كمية بين كتاب "الامتحان" وكتاب "الأضواء" تكشف عن تفاوت في كثافة وعمق المحتوى.</p>
+            <div class="mb-12 text-center">
+                <h2 class="text-3xl font-bold text-[#800020] mb-3 relative inline-block">
+                    لوحة المعلومات: المقارنة المعيارية
+                    <span class="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-16 h-1 bg-[#b45309] rounded-full"></span>
+                </h2>
+                <p class="text-gray-500 mt-4">نظرة كمية تكشف التفاوت في كثافة وعمق المحتوى بين "الامتحان" و"الأضواء"</p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-stretch">
                 <!-- Chart 1: Content Volume -->
-                <div class="bg-gray-50 p-6 rounded-xl shadow-sm border border-gray-100">
-                    <h3 class="text-lg font-semibold text-center mb-4 text-gray-800">الفجوة الكمية في المحتوى والتدريبات</h3>
+                <div class="bg-gray-50 p-8 rounded-2xl border border-gray-100 hover:shadow-lg transition-shadow duration-300">
+                    <h3 class="text-xl font-bold text-center mb-6 text-gray-800 flex items-center justify-center gap-2">
+                        <span class="w-2 h-6 bg-[#800020] rounded-full"></span>
+                        الفجوة الكمية في المحتوى والتدريبات
+                    </h3>
                     <div class="chart-container">
                         <canvas id="contentVolumeChart"></canvas>
                     </div>
-                    <p class="text-xs text-center text-gray-500 mt-4">الأرقام تمثل عدد الصفحات أو النصوص وفقاً للتقرير</p>
                 </div>
 
-                <!-- Text Stats / Key Insights -->
-                <div class="space-y-6">
-                    <div class="bg-red-50 p-6 rounded-lg border-r-4 border-red-500">
-                        <h4 class="font-bold text-red-800 text-lg mb-2">نصوص الاستماع</h4>
-                        <p class="text-gray-700 text-sm leading-relaxed">
-                            يعاني الكتاب من نقص حاد في عدد نصوص الاستماع (<span class="font-bold">33</span> نصاً) مقارنة بالمنافس (<span class="font-bold">72</span> نصاً)، مع طول مفرط في النصوص المقدمة مما يشتت انتباه الطالب.
-                        </p>
+                <!-- Text Stats / Key Insights Cards -->
+                <div class="flex flex-col gap-6 justify-center">
+                    <div class="bg-white p-6 rounded-xl border-r-4 border-[#800020] shadow-sm hover:shadow-md transition-all hover:translate-x-[-5px]">
+                        <div class="flex items-start gap-4">
+                            <div class="bg-red-50 text-[#800020] p-3 rounded-full text-xl">🎧</div>
+                            <div>
+                                <h4 class="font-bold text-gray-900 text-lg mb-1">نصوص الاستماع</h4>
+                                <p class="text-gray-600 text-sm leading-relaxed">
+                                    نقص حاد: <span class="font-bold text-[#800020]">33 نصاً فقط</span> مقابل 72 للمنافس، مع طول مفرط يشتت الانتباه.
+                                </p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="bg-amber-50 p-6 rounded-lg border-r-4 border-amber-500">
-                        <h4 class="font-bold text-amber-800 text-lg mb-2">التعبير الكتابي</h4>
-                        <p class="text-gray-700 text-sm leading-relaxed">
-                            سياسة "التقشف" في صفحات التعبير (<span class="font-bold">13</span> صفحة فقط) مقارنة بـ (<span class="font-bold">29</span> صفحة) للمنافس، تحرم الطالب من المساحة الكافية للتدريب المهاري.
-                        </p>
+                    
+                    <div class="bg-white p-6 rounded-xl border-r-4 border-[#b45309] shadow-sm hover:shadow-md transition-all hover:translate-x-[-5px]">
+                        <div class="flex items-start gap-4">
+                            <div class="bg-orange-50 text-[#b45309] p-3 rounded-full text-xl">🖋️</div>
+                            <div>
+                                <h4 class="font-bold text-gray-900 text-lg mb-1">التعبير الكتابي</h4>
+                                <p class="text-gray-600 text-sm leading-relaxed">
+                                    سياسة تقشف: <span class="font-bold text-[#b45309]">13 صفحة فقط</span> مقابل 29 للمنافس، مما يضعف المهارة الكتابية.
+                                </p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="bg-blue-50 p-6 rounded-lg border-r-4 border-blue-500">
-                        <h4 class="font-bold text-blue-800 text-lg mb-2">الدعم اللوجستي</h4>
-                        <p class="text-gray-700 text-sm leading-relaxed">
-                            غياب تام لخطة توزيع المنهج والتقييم التشخيصي في كتاب الامتحان، بينما يوفرها المنافس كأدوات أساسية للمعلم والطالب.
-                        </p>
+                    
+                    <div class="bg-white p-6 rounded-xl border-r-4 border-gray-600 shadow-sm hover:shadow-md transition-all hover:translate-x-[-5px]">
+                        <div class="flex items-start gap-4">
+                            <div class="bg-gray-100 text-gray-700 p-3 rounded-full text-xl">📅</div>
+                            <div>
+                                <h4 class="font-bold text-gray-900 text-lg mb-1">الدعم اللوجستي</h4>
+                                <p class="text-gray-600 text-sm leading-relaxed">
+                                    غياب تام لخطط توزيع المنهج والتقييم التشخيصي، وهما أدوات أساسية للمعلم.
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -105,59 +175,66 @@
     </section>
 
     <!-- Main Interactive Explorer -->
-    <section class="py-12 container mx-auto px-4" id="explorer">
-        <div class="text-center mb-10">
-            <h2 class="text-3xl font-bold text-[#1e3a8a] mb-4">استكشاف الملاحظات والتوصيات</h2>
-            <p class="text-gray-600 mb-8 max-w-2xl mx-auto">اضغط على البطاقة لقلبها ورؤية التوصية المقترحة لمعالجة الفجوة.</p>
+    <section class="py-16 container mx-auto px-4" id="explorer">
+        <div class="text-center mb-12 animate-fade-up delay-300">
+            <h2 class="text-3xl font-bold text-[#800020] mb-4">استكشاف الملاحظات والتوصيات</h2>
+            <p class="text-gray-600 mb-8 max-w-2xl mx-auto">اضغط على البطاقة لقلبها واكتشاف الحلول المقترحة.</p>
             
             <!-- Filters -->
             <div class="flex flex-wrap justify-center gap-3 mb-8" id="filters">
-                <button onclick="filterCards('all')" class="filter-btn active px-5 py-2 rounded-full text-sm font-semibold transition-all bg-[#1e3a8a] text-white shadow-md hover:bg-blue-900">الكل</button>
-                <button onclick="filterCards('design')" class="filter-btn px-5 py-2 rounded-full text-sm font-semibold transition-all bg-white text-gray-600 hover:bg-gray-100 border border-gray-200">الهوية والتصميم</button>
-                <button onclick="filterCards('structure')" class="filter-btn px-5 py-2 rounded-full text-sm font-semibold transition-all bg-white text-gray-600 hover:bg-gray-100 border border-gray-200">البنية والمحتوى</button>
-                <button onclick="filterCards('pedagogy')" class="filter-btn px-5 py-2 rounded-full text-sm font-semibold transition-all bg-white text-gray-600 hover:bg-gray-100 border border-gray-200">التربية والمهارات</button>
-                <button onclick="filterCards('assessment')" class="filter-btn px-5 py-2 rounded-full text-sm font-semibold transition-all bg-white text-gray-600 hover:bg-gray-100 border border-gray-200">التقييم والمراجعة</button>
+                <button onclick="filterCards('all')" class="filter-btn active px-6 py-2.5 rounded-full text-sm font-bold shadow-sm">الكل</button>
+                <button onclick="filterCards('design')" class="filter-btn inactive px-6 py-2.5 rounded-full text-sm font-bold shadow-sm">الهوية والتصميم</button>
+                <button onclick="filterCards('structure')" class="filter-btn inactive px-6 py-2.5 rounded-full text-sm font-bold shadow-sm">البنية والمحتوى</button>
+                <button onclick="filterCards('pedagogy')" class="filter-btn inactive px-6 py-2.5 rounded-full text-sm font-bold shadow-sm">التربية والمهارات</button>
+                <button onclick="filterCards('assessment')" class="filter-btn inactive px-6 py-2.5 rounded-full text-sm font-bold shadow-sm">التقييم والمراجعة</button>
             </div>
         </div>
 
         <!-- Cards Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="cardsGrid">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="cardsGrid">
             <!-- Cards will be injected via JS -->
         </div>
     </section>
 
-    <!-- Listening Analysis Drill-down (Specific Feature) -->
-    <section class="bg-[#1e3a8a] text-white py-16">
-        <div class="container mx-auto px-4">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+    <!-- Listening Analysis Drill-down -->
+    <section class="bg-gradient-to-br from-[#800020] to-[#5a0016] text-white py-20 relative overflow-hidden">
+        <!-- Decoration -->
+        <div class="absolute top-0 right-0 w-64 h-64 bg-white opacity-5 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2"></div>
+        <div class="absolute bottom-0 left-0 w-96 h-96 bg-[#b45309] opacity-10 rounded-full blur-3xl transform -translate-x-1/2 translate-y-1/2"></div>
+
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                 <div>
-                    <h2 class="text-3xl font-bold mb-6 border-b-2 border-amber-500 inline-block pb-2">قضية نصوص الاستماع</h2>
-                    <p class="text-lg leading-loose opacity-90 mb-6">
-                        واحدة من أخطر الملاحظات هي منهجية التعامل مع "مهارة الاستماع". الكتاب يحول الاختبار السمعي إلى اختبار قراءة مقنع من خلال عرض الأسئلة والنصوص أمام عين الطالب.
+                    <span class="text-[#b45309] font-bold tracking-wider uppercase text-sm bg-white/10 px-3 py-1 rounded mb-4 inline-block">تحليل معمق</span>
+                    <h2 class="text-4xl font-bold mb-6 leading-tight">قضية نصوص الاستماع</h2>
+                    <p class="text-lg leading-loose text-gray-200 mb-8 font-light">
+                        منهجية التعامل مع "مهارة الاستماع" تحول الاختبار السمعي إلى قراءة مقنعة. عرض النصوص أمام الطالب يقتل المهارة ويستبدل الأذن بالعين.
                     </p>
-                    <ul class="space-y-4 mb-8">
-                        <li class="flex items-start">
-                            <span class="text-2xl ml-3">⚠️</span>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-start bg-white/5 p-4 rounded-lg border border-white/10">
+                            <span class="text-3xl ml-4">⚠️</span>
                             <div>
-                                <strong class="block text-amber-400">طول النصوص المفرط</strong>
-                                <span class="text-sm opacity-80">نصوص تصل إلى 155 كلمة، مما يرهق الذاكرة العاملة للطالب (المعيار: 60-80 كلمة).</span>
+                                <strong class="block text-white text-lg mb-1">طول النصوص المفرط</strong>
+                                <span class="text-gray-300 text-sm">نصوص تصل إلى 155 كلمة ترهق الذاكرة العاملة (المعيار: 60-80).</span>
                             </div>
-                        </li>
-                        <li class="flex items-start">
-                            <span class="text-2xl ml-3">🚫</span>
+                        </div>
+                        <div class="flex items-start bg-white/5 p-4 rounded-lg border border-white/10">
+                            <span class="text-3xl ml-4">👁️</span>
                             <div>
-                                <strong class="block text-amber-400">اغتيال المهارة</strong>
-                                <span class="text-sm opacity-80">وجود إحالات بصرية ("في الفقرة الأولى") يلغي الاعتماد على الأذن.</span>
+                                <strong class="block text-white text-lg mb-1">الإحالات البصرية</strong>
+                                <span class="text-gray-300 text-sm">عبارات مثل "في الفقرة الأولى" تلغي الاعتماد على السمع تماماً.</span>
                             </div>
-                        </li>
-                    </ul>
-                    <button onclick="scrollToExplorer()" class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-8 rounded shadow-lg transition transform hover:-translate-y-1">
-                        استعراض الحل المقترح
+                        </div>
+                    </div>
+
+                    <button onclick="scrollToExplorer()" class="mt-8 bg-[#b45309] hover:bg-[#9a4507] text-white font-bold py-3.5 px-8 rounded-full shadow-lg transition transform hover:-translate-y-1 flex items-center gap-2">
+                        استعراض الحل المقترح <span class="text-xl">←</span>
                     </button>
                 </div>
                 
-                <div class="bg-white/10 p-8 rounded-xl backdrop-blur-sm border border-white/20">
-                    <h3 class="text-xl font-bold mb-4 text-center">مؤشر جودة الاستماع</h3>
+                <div class="bg-white/10 p-8 rounded-2xl backdrop-blur-md border border-white/10 shadow-2xl">
+                    <h3 class="text-xl font-bold mb-6 text-center text-white">مؤشر جودة الاستماع (عدد الكلمات)</h3>
                     <div class="chart-container" style="height: 300px;">
                         <canvas id="listeningChart"></canvas>
                     </div>
@@ -167,34 +244,39 @@
     </section>
 
     <!-- Closing Recommendations Summary -->
-    <section class="py-16 bg-gray-50">
-        <div class="container mx-auto px-4 text-center max-w-4xl">
-            <h2 class="text-3xl font-bold text-[#1e3a8a] mb-8">خارطة الطريق: أهم 3 تدخلات عاجلة</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="bg-white p-6 rounded-lg shadow border-t-4 border-amber-500">
-                    <div class="text-4xl mb-4">🧭</div>
-                    <h3 class="font-bold text-lg mb-2">بَوْصَلَة الامتحان</h3>
-                    <p class="text-sm text-gray-600">تحويل مقدمة الكتاب ونواتج التعلم إلى رحلة بصرية ممتعة تشرح "تصنيف بلوم" بلغة الطالب.</p>
+    <section class="py-20 bg-gray-50">
+        <div class="container mx-auto px-4 text-center max-w-5xl">
+            <h2 class="text-3xl font-bold text-[#800020] mb-12">خارطة الطريق: أهم 3 تدخلات عاجلة</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Strategic Card 1 -->
+                <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border-t-8 border-[#800020] transform hover:-translate-y-2 group">
+                    <div class="w-16 h-16 bg-red-50 text-[#800020] rounded-full flex items-center justify-center text-3xl mx-auto mb-6 group-hover:bg-[#800020] group-hover:text-white transition-colors">🧭</div>
+                    <h3 class="font-bold text-xl mb-3 text-gray-800">بَوْصَلَة الامتحان</h3>
+                    <p class="text-gray-600 leading-relaxed text-sm">تحويل النظريات التربوية الجافة إلى رحلة بصرية ممتعة تشرح "تصنيف بلوم" للطالب.</p>
                 </div>
-                <div class="bg-white p-6 rounded-lg shadow border-t-4 border-amber-500">
-                    <div class="text-4xl mb-4">🩹</div>
-                    <h3 class="font-bold text-lg mb-2">التقييم التشخيصي</h3>
-                    <p class="text-sm text-gray-600">إضافة اختبار قبلي شامل مع خطة علاجية فورية وردم فجوة الانتقال من الابتدائية.</p>
+                
+                <!-- Strategic Card 2 -->
+                <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border-t-8 border-[#b45309] transform hover:-translate-y-2 group">
+                    <div class="w-16 h-16 bg-orange-50 text-[#b45309] rounded-full flex items-center justify-center text-3xl mx-auto mb-6 group-hover:bg-[#b45309] group-hover:text-white transition-colors">🩹</div>
+                    <h3 class="font-bold text-xl mb-3 text-gray-800">التقييم التشخيصي</h3>
+                    <p class="text-gray-600 leading-relaxed text-sm">ردم فجوة الانتقال من الابتدائية عبر اختبار قبلي شامل وتوجيه علاجي فوري.</p>
                 </div>
-                <div class="bg-white p-6 rounded-lg shadow border-t-4 border-amber-500">
-                    <div class="text-4xl mb-4">👁️</div>
-                    <h3 class="font-bold text-lg mb-2">الريجيم النصي</h3>
-                    <p class="text-sm text-gray-600">اختزال نصوص الاستماع بنسبة 40% وإزالة المثيرات البصرية لضمان مصداقية القياس.</p>
+                
+                <!-- Strategic Card 3 -->
+                <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border-t-8 border-gray-800 transform hover:-translate-y-2 group">
+                    <div class="w-16 h-16 bg-gray-100 text-gray-800 rounded-full flex items-center justify-center text-3xl mx-auto mb-6 group-hover:bg-gray-800 group-hover:text-white transition-colors">✂️</div>
+                    <h3 class="font-bold text-xl mb-3 text-gray-800">الريجيم النصي</h3>
+                    <p class="text-gray-600 leading-relaxed text-sm">اختزال نصوص الاستماع وحجب المثيرات البصرية لضمان مصداقية القياس.</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="bg-gray-800 text-gray-400 py-8 text-center">
+    <footer class="bg-[#2d0a12] text-gray-400 py-10 text-center border-t border-white/10">
         <div class="container mx-auto px-4">
-            <p>&copy; 2024 تقرير مراجعة جودة المحتوى التعليمي.</p>
-            <p class="text-sm mt-2">تم إنشاء هذا العرض التفاعلي بناءً على التقرير النصي المقدم.</p>
+            <p class="font-medium text-gray-300">&copy; 2024 تقرير مراجعة جودة المحتوى التعليمي.</p>
+            <p class="text-sm mt-3 opacity-60">تصميم وتطوير تفاعلي</p>
         </div>
     </footer>
 
@@ -202,25 +284,25 @@
     <script>
         // --- Data Source ---
         const reportData = [
-            { id: 1, title: "الغلاف: التنافر الثقافي", category: "design", icon: "🎨", critique: "شخصية بيكسار تمسك كتاباً يفتح من اليسار (أجنبي). هذا يضعف أصالة الهوية العربية.", recommendation: "استخدام صور حية لطلاب مصريين وتصحيح اتجاه الكتاب لتعزيز الارتباط العاطفي." },
-            { id: 2, title: "الغلاف: التشويش التسويقي", category: "design", icon: "📢", critique: "عبارة 'تطبيق الامتحان' تطغى على العنوان، مما يجعله يبدو كإعلان.", recommendation: "نقل العبارة لشريط جانبي أو وسام (Badge) لفصل التسويق عن التعليم." },
-            { id: 3, title: "المقدمة وتصنيف بلوم", category: "pedagogy", icon: "🧠", critique: "مقدمة روتينية خالية من المرجعية التربوية مقارنة بـ 'الأضواء' الذي شرح تصنيف بلوم.", recommendation: "إنشاء إنفوجرافيك 'بَوْصَلَة الامتحان' لشرح مستويات التفكير بلغة الطالب." },
-            { id: 4, title: "دليل الكتاب: الزحام البصري", category: "design", icon: "🔍", critique: "صور مصغرة للصفحات لا تقرأ، ونص يوضح الواضحات (حشو).", recommendation: "استخدام تقنية 'العدسة المكبرة' (Zoom) لإبراز جماليات التصميم الداخلي بدلاً من سرده." },
-            { id: 5, title: "المصطلحات والمفاهيم", category: "structure", icon: "📚", critique: "قصر المظلة المفاهيمية على 5 مصطلحات فقط وتكرارها، مما يقلل الفهم العميق.", recommendation: "منهجية 'الكبسولة المعرفية': توسيع القائمة، تعريف مبسط، مثال، وتدريب فوري." },
-            { id: 6, title: "الفهرس: المنطق التصنيفي", category: "structure", icon: "📑", critique: "مقارنة غير متكافئة بين 'الوحدات' (شامل) و'النحو' (فرعي) في العناوين الرئيسية.", recommendation: "إعادة الهيكلة بدمج الفروع تحت الوحدات أو تعديل العناوين لتحقيق التوازن." },
-            { id: 7, title: "توزيع المنهج", category: "structure", icon: "📅", critique: "غياب صفحة توزيع المنهج تماماً، مما يمثل عبئاً على المعلم.", recommendation: "إدراج خريطة زمنية تفاعلية مع QR Code للتحديثات الوزارية." },
-            { id: 8, title: "نواتج التعلم", category: "pedagogy", icon: "🎯", critique: "غياب الربط بين نواتج التعلم وشكل السؤال الامتحاني. تداخل الصفحات مع المراجعة.", recommendation: "جدول ثلاثي: مخرج التعلم -> صيغة السؤال -> مفتاح الحل." },
-            { id: 9, title: "التقييم التشخيصي", category: "assessment", icon: "🩺", critique: "غياب التقييم القبلي تماماً، متجاهلاً فجوة الانتقال من الابتدائية.", recommendation: "إضافة اختبار تشخيصي مع توجيه علاجي فوري (راجع صفحة كذا)." },
-            { id: 10, title: "هيكل المراجعة العامة", category: "assessment", icon: "🏗️", critique: "مراجعة مجزأة وغير مركزة (4 صفحات فقط للقراءة والنصوص).", recommendation: "إنشاء فصل تمهيدي موحد 'بوابة العبور' يشمل مسحاً شاملاً وتدريباً فورياً." },
-            { id: 11, title: "محتوى المراجعة", category: "content", icon: "📝", critique: "حشو أكاديمي (الجذر اللغوي) وأخطاء لغوية في صياغة القواعد.", recommendation: "حذف الحشو غير المطالب به، واعتماد كتابة الجذور مفرقة (ق ض ي) للدقة." },
-            { id: 12, title: "أمثلة البلاغة", category: "content", icon: "🗣️", critique: "جمود الأمثلة (الجندي أسد) وانفصالها عن واقع الطالب.", recommendation: "تجديد الأمثلة لتعكس الوعي الرقمي والبيئي (الهاتف لص الوقت)." },
-            { id: 13, title: "التدريبات الشاملة", category: "assessment", icon: "🏋️", critique: "العنوان مضلل؛ التدريبات تغطي 50% فقط من الفروع (قراءة ونصوص).", recommendation: "تعديل العنوان إلى 'تطبيقات عامة' أو إضافة تدريبات لباقي الفروع." },
-            { id: 14, title: "كثافة نصوص الاستماع", category: "content", icon: "🎧", critique: "طول مفرط للنصوص (155 كلمة) وقلة عددها (33 نصاً).", recommendation: "سياسة 'الريجيم النصي': اختزال النصوص إلى 80 كلمة وزيادة عددها." },
-            { id: 15, title: "منهجية الاستماع", category: "assessment", icon: "👁️", critique: "عرض الأسئلة نصياً أمام الطالب يحول الاختبار من سمعي إلى بصري.", recommendation: "حجب المثير البصري وتغيير صيغة السؤال ليعتمد كلياً على الأذن." },
-            { id: 16, title: "جودة الأسئلة الموضوعية", category: "assessment", icon: "✅", critique: "ضعف المشتتات، تكرار البدائل، والتركيز على قاع هرم بلوم (تذكر).", recommendation: "تنويع الخيارات، تعزيز الأسئلة الموقفية، وتصميم مشتتات ذكية." },
-            { id: 17, title: "اللمحة الأدبية", category: "pedagogy", icon: "📖", critique: "تأخير المفاهيم لنهاية النص، واستخدام مصطلحات غير دقيقة (التصريع).", recommendation: "تقديم اللمحة قبل النص للتهيئة، والالتزام بمصطلحات الوزارة." },
-            { id: 18, title: "القواعد الإملائية", category: "content", icon: "✍️", critique: "قصور كمي (6 صفحات) وأخطاء علمية في الأمثلة (هؤلاء).", recommendation: "التحول للإنفوجرافيك، تنقيح الأمثلة، وإثراء بنك الأسئلة." },
-            { id: 19, title: "التعبير الكتابي", category: "content", icon: "🖋️", critique: "مساحة ضئيلة (13 صفحة) واختبار للذاكرة بدلاً من مهارة الكتابة.", recommendation: "مضاعفة المساحة، وتوفير 'صندوق معلومات' كسقالات تعليمية للكتابة." }
+            { id: 1, title: "التنافر الثقافي", category: "design", icon: "🎨", critique: "شخصية بيكسار تمسك كتاباً يفتح من اليسار (أجنبي). هذا يضعف أصالة الهوية العربية.", recommendation: "استخدام صور حية لطلاب مصريين وتصحيح اتجاه الكتاب لتعزيز الارتباط العاطفي." },
+            { id: 2, title: "التشويش التسويقي", category: "design", icon: "📢", critique: "عبارة 'تطبيق الامتحان' تطغى على العنوان، مما يجعله يبدو كإعلان.", recommendation: "نقل العبارة لشريط جانبي أو وسام (Badge) لفصل التسويق عن التعليم." },
+            { id: 3, title: "المقدمة وتصنيف بلوم", category: "pedagogy", icon: "🧠", critique: "مقدمة روتينية خالية من المرجعية التربوية مقارنة بالمنافسين.", recommendation: "إنشاء إنفوجرافيك 'بَوْصَلَة الامتحان' لشرح مستويات التفكير بلغة الطالب." },
+            { id: 4, title: "الزحام البصري", category: "design", icon: "🔍", critique: "صور مصغرة للصفحات لا تقرأ، ونص يوضح الواضحات (حشو).", recommendation: "استخدام تقنية 'العدسة المكبرة' (Zoom) لإبراز جماليات التصميم الداخلي." },
+            { id: 5, title: "المصطلحات والمفاهيم", category: "structure", icon: "📚", critique: "قصر المظلة المفاهيمية على 5 مصطلحات وتكرارها يقلل الفهم العميق.", recommendation: "منهجية 'الكبسولة المعرفية': توسيع القائمة، تعريف مبسط، ومثال تطبيقي." },
+            { id: 6, title: "المنطق التصنيفي", category: "structure", icon: "📑", critique: "مقارنة غير متكافئة بين 'الوحدات' و'النحو' في العناوين الرئيسية.", recommendation: "إعادة الهيكلة بدمج الفروع تحت الوحدات لتحقيق التوازن المنطقي." },
+            { id: 7, title: "توزيع المنهج", category: "structure", icon: "📅", critique: "غياب صفحة توزيع المنهج، مما يمثل عبئاً لوجستياً على المعلم.", recommendation: "إدراج خريطة زمنية تفاعلية مع QR Code للتحديثات الوزارية." },
+            { id: 8, title: "نواتج التعلم", category: "pedagogy", icon: "🎯", critique: "غياب الربط بين نواتج التعلم وشكل السؤال الامتحاني.", recommendation: "جدول ثلاثي: مخرج التعلم -> صيغة السؤال -> مفتاح الحل." },
+            { id: 9, title: "التقييم التشخيصي", category: "assessment", icon: "🩺", critique: "تجاهل فجوة الانتقال من الابتدائية بغياب التقييم القبلي.", recommendation: "إضافة اختبار تشخيصي مع توجيه علاجي فوري." },
+            { id: 10, title: "هيكل المراجعة", category: "assessment", icon: "🏗️", critique: "مراجعة مجزأة وغير مركزة (4 صفحات فقط للقراءة والنصوص).", recommendation: "إنشاء فصل تمهيدي موحد 'بوابة العبور' يشمل مسحاً شاملاً." },
+            { id: 11, title: "محتوى المراجعة", category: "content", icon: "📝", critique: "حشو أكاديمي (الجذر اللغوي) وأخطاء لغوية في الصياغة.", recommendation: "حذف الحشو غير المطالب به، وكتابة الجذور مفرقة للدقة." },
+            { id: 12, title: "أمثلة البلاغة", category: "content", icon: "🗣️", critique: "جمود الأمثلة (الجندي أسد) وانفصالها عن واقع الطالب الرقمي.", recommendation: "تجديد الأمثلة لتعكس الوعي الرقمي والبيئي (الهاتف لص الوقت)." },
+            { id: 13, title: "التدريبات الشاملة", category: "assessment", icon: "🏋️", critique: "العنوان مضلل؛ التدريبات تغطي 50% فقط من الفروع.", recommendation: "تعديل العنوان إلى 'تطبيقات عامة' أو شمول كافة الفروع." },
+            { id: 14, title: "كثافة الاستماع", category: "content", icon: "🎧", critique: "طول مفرط للنصوص (155 كلمة) وقلة عددها (33 نصاً).", recommendation: "سياسة 'الريجيم النصي': اختزال النصوص إلى 80 كلمة وزيادة عددها." },
+            { id: 15, title: "منهجية الاستماع", category: "assessment", icon: "👁️", critique: "عرض الأسئلة نصياً يحول الاختبار من سمعي إلى بصري.", recommendation: "حجب المثير البصري وتغيير صيغة السؤال ليعتمد كلياً على الأذن." },
+            { id: 16, title: "جودة الأسئلة", category: "assessment", icon: "✅", critique: "ضعف المشتتات والتركيز على قاع هرم بلوم (التذكر).", recommendation: "تنويع الخيارات، تعزيز الأسئلة الموقفية، وتصميم مشتتات ذكية." },
+            { id: 17, title: "اللمحة الأدبية", category: "pedagogy", icon: "📖", critique: "تأخير المفاهيم لنهاية النص، واستخدام مصطلحات غير دقيقة.", recommendation: "تقديم اللمحة قبل النص للتهيئة، والالتزام بمصطلحات الوزارة." },
+            { id: 18, title: "القواعد الإملائية", category: "content", icon: "✍️", critique: "قصور كمي (6 صفحات) وأخطاء علمية في الأمثلة.", recommendation: "التحول للإنفوجرافيك، تنقيح الأمثلة، وإثراء بنك الأسئلة." },
+            { id: 19, title: "التعبير الكتابي", category: "content", icon: "🖋️", critique: "مساحة ضئيلة (13 صفحة) واختبار للذاكرة بدلاً من المهارة.", recommendation: "مضاعفة المساحة، وتوفير 'صندوق معلومات' كسقالات تعليمية." }
         ];
 
         // --- Render Functions ---
@@ -233,37 +315,35 @@
                 ? reportData 
                 : reportData.filter(item => item.category === filter);
 
-            filteredData.forEach(item => {
+            filteredData.forEach((item, index) => {
                 const cardWrapper = document.createElement('div');
-                cardWrapper.className = 'card-flip h-80 w-full cursor-pointer group';
+                cardWrapper.className = `card-flip h-80 w-full cursor-pointer group animate-fade-up`;
+                cardWrapper.style.animationDelay = `${index * 50}ms`; // Staggered animation
+                
                 cardWrapper.onclick = function() {
                     this.querySelector('.card-inner').classList.toggle('flipped');
                 };
 
-                // Styling based on category for subtle hints
-                let borderClass = 'border-gray-200';
-                if(item.category === 'design') borderClass = 'border-purple-200';
-                if(item.category === 'pedagogy') borderClass = 'border-blue-200';
-                if(item.category === 'assessment') borderClass = 'border-red-200';
-                if(item.category === 'structure') borderClass = 'border-green-200';
-
                 cardWrapper.innerHTML = `
-                    <div class="card-inner relative w-full h-full transition-all duration-500 transform-gpu">
+                    <div class="card-inner w-full h-full shadow-md rounded-2xl">
                         <!-- Front: Critique -->
-                        <div class="card-front absolute w-full h-full bg-white rounded-xl shadow-md border-2 ${borderClass} p-6 flex flex-col items-center justify-center text-center hover:shadow-xl transition-shadow">
-                            <div class="text-4xl mb-4">${item.icon}</div>
-                            <h3 class="font-bold text-lg text-gray-800 mb-2">${item.title}</h3>
-                            <div class="bg-red-50 text-red-800 px-3 py-1 rounded-full text-xs font-bold mb-4">الملحوظة (الفجوة)</div>
-                            <p class="text-gray-600 text-sm leading-relaxed">${item.critique}</p>
-                            <p class="mt-auto text-xs text-gray-400 font-semibold pt-4">اضغط لعرض الحل ↺</p>
+                        <div class="card-front bg-white rounded-2xl border border-gray-100 p-6 flex flex-col items-center justify-center text-center hover:shadow-xl transition-shadow duration-300">
+                            <div class="icon-circle bg-red-50 text-[#800020]">${item.icon}</div>
+                            <h3 class="font-bold text-lg text-gray-800 mb-3">${item.title}</h3>
+                            <div class="bg-red-50 text-[#800020] px-3 py-1 rounded-md text-xs font-bold mb-4 border border-red-100">الفجوة المرصودة</div>
+                            <p class="text-gray-600 text-sm leading-relaxed line-clamp-3">${item.critique}</p>
+                            <p class="mt-auto text-xs text-[#b45309] font-bold pt-4 flex items-center gap-1">
+                                <span>اضغط لعرض الحل</span>
+                                <span class="group-hover:translate-x-[-3px] transition-transform">↺</span>
+                            </p>
                         </div>
                         
                         <!-- Back: Recommendation -->
-                        <div class="card-back absolute w-full h-full bg-[#1e3a8a] rounded-xl shadow-md p-6 flex flex-col items-center justify-center text-center text-white">
-                            <div class="text-4xl mb-4">💡</div>
-                            <h3 class="font-bold text-lg text-amber-400 mb-2">التوصية المقترحة</h3>
-                            <p class="text-gray-100 text-sm leading-relaxed">${item.recommendation}</p>
-                             <p class="mt-auto text-xs text-blue-300 font-semibold pt-4">اضغط للعودة ↺</p>
+                        <div class="card-back rounded-2xl p-8 flex flex-col items-center justify-center text-center text-white border border-[#5a0016]">
+                            <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mb-4 text-2xl">💡</div>
+                            <h3 class="font-bold text-lg text-[#fbbf24] mb-3">التوصية المقترحة</h3>
+                            <p class="text-red-50 text-sm leading-loose font-medium">${item.recommendation}</p>
+                             <p class="mt-auto text-xs text-white/50 font-semibold pt-4">اضغط للعودة ↺</p>
                         </div>
                     </div>
                 `;
@@ -273,48 +353,52 @@
 
         // --- Filter Logic ---
         function filterCards(category) {
-            renderCards(category);
-            
             // Update UI buttons
             const buttons = document.querySelectorAll('.filter-btn');
             buttons.forEach(btn => {
-                if (btn.getAttribute('onclick').includes(category)) {
-                    btn.classList.remove('bg-white', 'text-gray-600', 'hover:bg-gray-100', 'border', 'border-gray-200');
-                    btn.classList.add('bg-[#1e3a8a]', 'text-white', 'shadow-md');
+                const isSelected = btn.getAttribute('onclick').includes(category);
+                if (isSelected) {
+                    btn.classList.remove('inactive');
+                    btn.classList.add('active');
                 } else {
-                    btn.classList.add('bg-white', 'text-gray-600', 'hover:bg-gray-100', 'border', 'border-gray-200');
-                    btn.classList.remove('bg-[#1e3a8a]', 'text-white', 'shadow-md');
+                    btn.classList.remove('active');
+                    btn.classList.add('inactive');
                 }
             });
+            
+            // Re-render
+            renderCards(category);
         }
 
         function scrollToExplorer() {
             document.getElementById('explorer').scrollIntoView({behavior: 'smooth'});
-            filterCards('content'); // Auto filter to show content issues including listening
+            filterCards('content');
         }
 
         // --- Charts Initialization ---
         document.addEventListener('DOMContentLoaded', () => {
             renderCards();
 
-            // Chart 1: Content Volume (Emtihan vs Adwaa)
+            // Chart 1: Content Volume
             const ctx1 = document.getElementById('contentVolumeChart').getContext('2d');
             new Chart(ctx1, {
                 type: 'bar',
                 data: {
-                    labels: ['عدد نصوص الاستماع', 'صفحات الإملاء', 'صفحات التعبير'],
+                    labels: ['نصوص الاستماع', 'صفحات الإملاء', 'صفحات التعبير'],
                     datasets: [
                         {
                             label: 'كتاب الامتحان',
                             data: [33, 6, 13],
-                            backgroundColor: '#1e3a8a',
-                            borderRadius: 4
+                            backgroundColor: '#800020', // Burgundy
+                            borderRadius: 6,
+                            barPercentage: 0.6
                         },
                         {
-                            label: 'كتاب الأضواء (المنافس)',
+                            label: 'كتاب الأضواء',
                             data: [72, 15, 29],
-                            backgroundColor: '#d1d5db',
-                            borderRadius: 4
+                            backgroundColor: '#cbd5e1', // Slate-300
+                            borderRadius: 6,
+                            barPercentage: 0.6
                         }
                     ]
                 },
@@ -322,44 +406,62 @@
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: {
-                        legend: { position: 'bottom', labels: { font: { family: 'Tajawal' } } },
-                        tooltip: { titleFont: { family: 'Tajawal' }, bodyFont: { family: 'Tajawal' } }
+                        legend: { position: 'bottom', labels: { font: { family: 'Tajawal' }, usePointStyle: true } },
+                        tooltip: { 
+                            backgroundColor: '#2d0a12',
+                            titleFont: { family: 'Tajawal' }, 
+                            bodyFont: { family: 'Tajawal' },
+                            padding: 10,
+                            cornerRadius: 8
+                        }
                     },
                     scales: {
-                        y: { beginAtZero: true, grid: { color: '#f3f4f6' } },
-                        x: { grid: { display: false }, ticks: { font: { family: 'Tajawal' } } }
+                        y: { beginAtZero: true, grid: { color: '#f1f5f9', drawBorder: false } },
+                        x: { grid: { display: false }, ticks: { font: { family: 'Tajawal', weight: 'bold' } } }
+                    },
+                    animation: {
+                        duration: 2000,
+                        easing: 'easeOutQuart'
                     }
                 }
             });
 
-            // Chart 2: Listening Quality (Word Count vs Standard)
-            // Lower is better for this specific metric (80 words is the standard)
+            // Chart 2: Listening Quality
             const ctx2 = document.getElementById('listeningChart').getContext('2d');
             new Chart(ctx2, {
                 type: 'doughnut',
                 data: {
-                    labels: ['المعيار العالمي (الكلمات)', 'زيادة العبء في الامتحان'],
+                    labels: ['المعيار العالمي (الكلمات)', 'العبء الزائد'],
                     datasets: [{
-                        data: [80, 75], // 80 standard, 155 total (so 75 excess)
-                        backgroundColor: ['#10b981', '#ef4444'],
-                        borderWidth: 0
+                        data: [80, 75],
+                        backgroundColor: ['#b45309', '#ffffff'], // Gold vs White
+                        borderColor: '#ffffff',
+                        borderWidth: 0,
+                        hoverOffset: 4
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    cutout: '70%',
+                    cutout: '75%',
                     plugins: {
-                        legend: { position: 'bottom', labels: { color: 'white', font: { family: 'Tajawal' } } },
+                        legend: { position: 'bottom', labels: { color: 'white', font: { family: 'Tajawal' }, usePointStyle: true } },
                         tooltip: { 
+                            backgroundColor: '#fff',
+                            titleColor: '#800020',
+                            bodyColor: '#333',
+                            bodyFont: { family: 'Tajawal' },
                             callbacks: {
                                 label: function(context) {
                                     if(context.label.includes('المعيار')) return ' المعيار: 80 كلمة كحد أقصى';
                                     return ' الامتحان: 155 كلمة (عبء زائد)';
                                 }
-                            },
-                            bodyFont: { family: 'Tajawal' }
+                            }
                         }
+                    },
+                    animation: {
+                        animateScale: true,
+                        animateRotate: true
                     }
                 }
             });
